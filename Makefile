@@ -1,16 +1,16 @@
 all: airodump
 
 airodump: main.o pcap.o parse802.o
-	gcc -W -Wall -o airodump main.o pcap.o parse802.o -lpcap
+	g++ -W -Wall -o airodump main.o pcap.o parse802.o -lpcap
 
-parse802.o: parse802.c parse802.h
-	gcc -c -o parse802.o parse802.c
+parse802.o: parse802.cpp parse802.h
+	g++ -c -o parse802.o parse802.cpp
 
-pcap.o: pcap.c pcap.h
-	gcc -c -o pcap.o pcap.c
+pcap.o: pcap.cpp pcap.h
+	g++ -c -o pcap.o pcap.cpp
 
-main.o: main.c
-	gcc -c -o main.o main.c
+main.o: main.cpp
+	g++ -c -o main.o main.cpp
 
 clean:
 	rm *.o airodump
