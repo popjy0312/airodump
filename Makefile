@@ -1,7 +1,7 @@
 all: airodump
 
 airodump: main.o pcap.o parse802.o
-	g++ -W -Wall -o airodump main.o pcap.o parse802.o -lpcap
+	g++ -W -Wall -o airodump main.o pcap.o parse802.o -lpcap -lglog
 
 parse802.o: parse802.cpp parse802.h
 	g++ -c -o parse802.o parse802.cpp
