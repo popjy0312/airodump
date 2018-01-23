@@ -1,16 +1,14 @@
-#include <pcap.h>
-#include <stdio.h>
-#include <glog/logging.h>
-
-#include "parse802.h"
+#include "pcap.h"
+#include "savedata.h"
 
 int main(int argc, char** argv){
-    char*                   dev;
-    pcap_t*                 handle;
-    char                    errbuf[PCAP_ERRBUF_SIZE];
-    const unsigned char*           packet;
-    struct pcap_pkthdr*     pheader;
-    uint32_t                res;
+    char*                               dev;
+    pcap_t*                             handle;
+    char                                errbuf[PCAP_ERRBUF_SIZE];
+    const unsigned char*                packet;
+    struct pcap_pkthdr*                 pheader;
+    uint32_t                            res;
+    std::map<uint32_t, struct ApData>   ApMap;
 
     google::InitGoogleLogging(argv[0]);
 
@@ -38,7 +36,7 @@ int main(int argc, char** argv){
         if (res == 0)
             continue;
         LOG(INFO) << "len " << pheader->len;
-        parse(packet);
+        parse(&ApMap, packet);
     }
 
     google::ShutdownGoogleLogging();
