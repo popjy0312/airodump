@@ -17,7 +17,25 @@
 #define TAG_SSID				0x00
 #define TAG_SUPPORT_RATE		0x01
 #define TAG_CHANNEL				0x03
+#define TAG_RSN_INFO			0x30
+#define TAG_EXTEND_SUPPORT_RATE	0x32
+#define TAG_VEND_SPECIFIC		0xdd
 
+#define	STD_OPN		0x0001
+#define	STD_WEP		0x0002
+#define	STD_WPA		0x0004
+#define	STD_WPA2	0x0008
+
+#define	ENC_WEP		0x0010
+#define	ENC_TKIP	0x0020
+#define	ENC_WRAP	0x0040
+#define	ENC_CCMP	0x0080
+#define ENC_WEP40	0x1000
+#define	ENC_WEP104	0x0100
+
+#define	AUTH_OPN	0x0200
+#define	AUTH_PSK	0x0400
+#define	AUTH_MGT	0x0800
 
 #define IEEE80211_ADDR_LEN 		6
 #define ESSID_MAX_LEN			33
@@ -56,10 +74,10 @@ struct bfNode{
 	uint8_t		ch;
 	uint8_t 	max_speed;
 	uint8_t		preamble;						/* 0 = long, 1 = short */
-	uint8_t		security;						/* ENC_*, AUTH_*, STD_* */
+	uint32_t	security;						/* ENC_*, AUTH_*, STD_* */
 }__attribute__((__packed__));
 
-int parse(std::map<uint32_t, struct bfNode*>* BfMap, const unsigned char* packet);
+int parse(std::map<uint32_t, struct bfNode*>* BfMap, char* packet, uint32_t caplen);
 
 void DumpHex(const void* data, size_t size);
 

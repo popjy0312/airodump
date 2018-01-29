@@ -5,7 +5,7 @@ int main(int argc, char** argv){
     char*                               dev;
     pcap_t*                             handle;
     char                                errbuf[PCAP_ERRBUF_SIZE];
-    const unsigned char*                packet;
+    char*                packet;
     struct pcap_pkthdr*                 pheader;
     uint32_t                            res;
     std::map<uint32_t, struct bfNode*>   BfMap;
@@ -33,11 +33,11 @@ int main(int argc, char** argv){
         LOG(FATAL) << "Fail activate handle " << pcap_geterr(handle);
         return 1;
     }
-    while( (res = pcap_next_ex(handle, &pheader, &packet)) >= 0){
+    while( (res = pcap_next_ex(handle, &pheader, (const unsigned char**)&packet)) >= 0){
         if (res == 0)
             continue;
-        LOG(INFO) << "len " << pheader->len;
-        parse(&BfMap, packet);
+        //LOG(INFO) << "len " << pheader->len;
+        parse(&BfMap, packet, pheader->len);
     }
 
     google::ShutdownGoogleLogging();
