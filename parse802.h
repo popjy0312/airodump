@@ -44,6 +44,15 @@
 
 #define MAX_STRBUF_LEN			512
 
+#define mymap					std::map<uint32_t, struct bfNode*>
+
+struct addr{
+	uint8_t		i_addr[IEEE80211_ADDR_LEN];
+	bool operator < (const struct addr &t) const {
+		memcmp(t.i_addr, i_addr, IEEE80211_ADDR_LEN);
+	}
+}__attribute__((__packed__));
+
 struct radiotap{
 	uint8_t 	h_revision;
 	uint8_t 	h_pad;
@@ -79,12 +88,12 @@ struct bfNode{
 	uint32_t	security;						/* ENC_*, AUTH_*, STD_* */
 }__attribute__((__packed__));
 
-int parse(std::map<uint32_t, struct bfNode*>* BfMap, char* packet, uint32_t caplen);
+int parse(mymap* BfMap, char* packet, uint32_t caplen);
 
 void DumpHex(const void* data, size_t size);
 
 uint32_t hash_bssid(uint8_t bssid[IEEE80211_ADDR_LEN]);
 
-void print_data(std::map<uint32_t, struct bfNode*>* BfMap);
+void print_data(mymap* BfMap);
 
 void clearScr();

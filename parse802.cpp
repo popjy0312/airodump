@@ -1,6 +1,6 @@
 #include "parse802.h"
 
-int parse(std::map<uint32_t, struct bfNode*>* BfMap, char* packet, uint32_t caplen){
+int parse(mymap* BfMap, char* packet, uint32_t caplen){
 	struct radiotap* 		radioHeader = (struct radiotap*)packet;
 	struct ieee_80211*		pieee;
 	struct lanMng*			planMng;
@@ -14,7 +14,7 @@ int parse(std::map<uint32_t, struct bfNode*>* BfMap, char* packet, uint32_t capl
 	uint8_t					flag;
 
 	struct bfNode*			ptmpNode;
-	std::map<uint32_t, struct bfNode*>::iterator it;
+	mymap::iterator it;
 
 /*
 	DumpHex(packet,32);
@@ -172,7 +172,7 @@ int parse(std::map<uint32_t, struct bfNode*>* BfMap, char* packet, uint32_t capl
 	return 0;
 }
 
-void print_data(std::map<uint32_t, struct bfNode*>* BfMap){
+void print_data(mymap* BfMap){
 	char				strbuf[MAX_STRBUF_LEN];
 	uint32_t 			len = 0;
 	struct bfNode* 		ptmpNode;
@@ -184,11 +184,11 @@ void print_data(std::map<uint32_t, struct bfNode*>* BfMap){
 	}
 
 	if(DEBUG){
-		printf(" BSSID			  PWR  Beacons	#Data, #/s  CH  MB   ENC  CIPHER AUTH ESSID\n\n");
+		printf(" BSSID              PWR  Beacons    #Data, #/s  CH  MB   ENC  CIPHER AUTH ESSID\n\n");
 	} else{
-		printw(" BSSID			  PWR  Beacons	#Data, #/s  CH  MB   ENC  CIPHER AUTH ESSID\n\n");
+		printw(" BSSID              PWR  Beacons    #Data, #/s  CH  MB   ENC  CIPHER AUTH ESSID\n\n");
 	}
-	for(std::map<uint32_t, struct bfNode*>::iterator it= BfMap->begin(); it != BfMap->end(); it++){
+	for(mymap::iterator it= BfMap->begin(); it != BfMap->end(); it++){
 		//LOG(INFO) << BfMap->size();
 		ptmpNode = it->second;
 		memset(strbuf, '\0', MAX_STRBUF_LEN);
@@ -210,7 +210,7 @@ void print_data(std::map<uint32_t, struct bfNode*>* BfMap){
 
 		len = strlen(strbuf);
 
-		if( (ptmpNode->security & (STD_OPN|STD_WEP|STD_WPA|STD_WPA2)) == 0) snprintf( strbuf+len, sizeof(strbuf)-len, "	" );
+		if( (ptmpNode->security & (STD_OPN|STD_WEP|STD_WPA|STD_WPA2)) == 0) snprintf( strbuf+len, sizeof(strbuf)-len, "     " );
 		else if( ptmpNode->security & STD_WPA2 ) snprintf( strbuf+len, sizeof(strbuf)-len, "WPA2" );
 		else if( ptmpNode->security & STD_WPA  ) snprintf( strbuf+len, sizeof(strbuf)-len, "WPA " );
 		else if( ptmpNode->security & STD_WEP  ) snprintf( strbuf+len, sizeof(strbuf)-len, "WEP " );
@@ -218,7 +218,7 @@ void print_data(std::map<uint32_t, struct bfNode*>* BfMap){
 
 		len = strlen(strbuf);
 
-		if( (ptmpNode->security & (ENC_WEP|ENC_TKIP|ENC_WRAP|ENC_CCMP|ENC_WEP104|ENC_WEP40)) == 0 ) snprintf( strbuf+len, sizeof(strbuf)-len, "		");
+		if( (ptmpNode->security & (ENC_WEP|ENC_TKIP|ENC_WRAP|ENC_CCMP|ENC_WEP104|ENC_WEP40)) == 0 ) snprintf( strbuf+len, sizeof(strbuf)-len, "        ");
 		else if( ptmpNode->security & ENC_CCMP   ) snprintf( strbuf+len, sizeof(strbuf)-len, " CCMP   ");
 		else if( ptmpNode->security & ENC_WRAP   ) snprintf( strbuf+len, sizeof(strbuf)-len, " WRAP   ");
 		else if( ptmpNode->security & ENC_TKIP   ) snprintf( strbuf+len, sizeof(strbuf)-len, " TKIP   ");
@@ -228,7 +228,7 @@ void print_data(std::map<uint32_t, struct bfNode*>* BfMap){
 
 		len = strlen(strbuf);
 
-		if( (ptmpNode->security & (AUTH_OPN|AUTH_PSK|AUTH_MGT)) == 0 ) snprintf( strbuf+len, sizeof(strbuf)-len, "	");
+		if( (ptmpNode->security & (AUTH_OPN|AUTH_PSK|AUTH_MGT)) == 0 ) snprintf( strbuf+len, sizeof(strbuf)-len, "    ");
 		else if( ptmpNode->security & AUTH_MGT   ) snprintf( strbuf+len, sizeof(strbuf)-len, " MGT");
 		else if( ptmpNode->security & AUTH_PSK   )
 		{
