@@ -1,4 +1,3 @@
 *.o
-airodump
-idea
 *.pcap
+airodump
