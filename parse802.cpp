@@ -16,9 +16,11 @@ int parse(std::map<uint32_t, struct bfNode*>* BfMap, char* packet, uint32_t capl
 	struct bfNode*			ptmpNode;
 	std::map<uint32_t, struct bfNode*>::iterator it;
 
-	//DumpHex(packet,32);
-	//LOG(INFO) << "h_len is "<< radioHeader->h_len;
-
+/*
+	DumpHex(packet,32);
+	LOG(INFO) << "h_len is "<< radioHeader->h_len;
+	printf("------------------------------------------------------\n");
+*/
 	pieee = (struct ieee_80211*)(packet + radioHeader->h_len); 
 
 	switch(pieee->i_type){
@@ -48,6 +50,7 @@ int parse(std::map<uint32_t, struct bfNode*>* BfMap, char* packet, uint32_t capl
 					BfMap->insert(std::pair<uint32_t, struct bfNode*>(hash_bssid(pieee->i_addr3), ptmpNode));
 					LOG(INFO) << "insert ok";
 				}
+
 				planMng = (struct lanMng*)((char*)pieee + sizeof(struct ieee_80211));
 				if((planMng->capInfo & 0x10) >> 4) ptmpNode->security |= STD_WEP|ENC_WEP;
 				else ptmpNode->security |= STD_OPN;
@@ -56,7 +59,7 @@ int parse(std::map<uint32_t, struct bfNode*>* BfMap, char* packet, uint32_t capl
 
 				ptmp = (char*)planMng + sizeof(struct lanMng);
 
-				while(ptmp - packet< caplen){
+				while(ptmp - packet + 4< caplen){		// frame check sequence 4 bytes
 					flag = 0;
 					tagNum = *ptmp;
 					tagLen = *(ptmp + 1);
@@ -69,7 +72,7 @@ int parse(std::map<uint32_t, struct bfNode*>* BfMap, char* packet, uint32_t capl
 							ptmpNode->ESSID[tagLen] = 0;
 							break;
 						case TAG_SUPPORT_RATE:
-							ptmpNode->max_speed = std::max(ptmpNode->max_speed, (uint8_t)(*(ptmp + tagLen - 1) / 2));
+							ptmpNode->max_speed = (uint8_t)std::max(ptmpNode->max_speed, (uint8_t)(*(ptmp + tagLen - 1) / 2));
 							break;
 						case TAG_CHANNEL:
 							ptmpNode->ch = *(ptmp + tagLen - 1);
@@ -80,7 +83,7 @@ int parse(std::map<uint32_t, struct bfNode*>* BfMap, char* packet, uint32_t capl
 							flag = 1;
 							break;
 						case TAG_EXTEND_SUPPORT_RATE:
-							ptmpNode->max_speed = std::max(ptmpNode->max_speed, (uint8_t)(*(ptmp + tagLen - 1) / 2));
+							ptmpNode->max_speed = (uint8_t)std::max(ptmpNode->max_speed, (uint8_t)(*(ptmp + tagLen - 1) / 2));
 							break;
 						case TAG_VEND_SPECIFIC:
 							if(tagLen >= 8 && (memcmp(ptmp, "\x00\x50\xF2\x01\x01\x00", 6) == 0)){
