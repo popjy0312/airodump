@@ -11,9 +11,12 @@ int main(int argc, char** argv){
     std::map<uint32_t, struct bfNode*>   BfMap;
 
     google::InitGoogleLogging(argv[0]);
-    //initscr();
 
-    FLAGS_alsologtostderr = 1;
+    if(DEBUG){
+        FLAGS_alsologtostderr = 1;
+    } else{
+        initscr();
+    }
 
 
     if(argc != 2){
@@ -41,6 +44,9 @@ int main(int argc, char** argv){
     }
 
     google::ShutdownGoogleLogging();
-    //endwin();
+    if(DEBUG){
+    } else{
+        endwin();
+    }
     return 0;
 }
