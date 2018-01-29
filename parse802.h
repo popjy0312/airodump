@@ -44,12 +44,12 @@
 
 #define MAX_STRBUF_LEN			512
 
-#define mymap					std::map<uint32_t, struct bfNode*>
+#define mymap					std::map<struct addr, struct bfNode*>
 
 struct addr{
 	uint8_t		i_addr[IEEE80211_ADDR_LEN];
 	bool operator < (const struct addr &t) const {
-		memcmp(t.i_addr, i_addr, IEEE80211_ADDR_LEN);
+		return 0 < memcmp(t.i_addr, i_addr, IEEE80211_ADDR_LEN);
 	}
 }__attribute__((__packed__));
 

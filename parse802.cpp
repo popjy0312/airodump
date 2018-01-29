@@ -26,7 +26,7 @@ int parse(mymap* BfMap, char* packet, uint32_t caplen){
 	switch(pieee->i_type){
 		case TYPE_MANAGE_FRAME:
 			if(pieee->i_sub_type == SUBTYPE_BEACON){
-				it = BfMap->find( hash_bssid(pieee->i_addr3));
+				it = BfMap->find( *(struct addr*)(pieee->i_addr3));
 				if(it != BfMap->end()){
 					//LOG(INFO) << "already";
 					ptmpNode = it->second;
@@ -47,7 +47,7 @@ int parse(mymap* BfMap, char* packet, uint32_t caplen){
 					ptmpNode->max_speed = 0;
 
 
-					BfMap->insert(std::pair<uint32_t, struct bfNode*>(hash_bssid(pieee->i_addr3), ptmpNode));
+					BfMap->insert(std::pair<struct addr, struct bfNode*>(*(struct addr*)(pieee->i_addr3), ptmpNode));
 					LOG(INFO) << "insert ok";
 				}
 
@@ -145,7 +145,7 @@ int parse(mymap* BfMap, char* packet, uint32_t caplen){
 		case TYPE_DATA_FRAME:
 			LOG(INFO) << "TYPE_DATA_FRAME";
 
-			it = BfMap->find( hash_bssid(pieee->i_addr3));
+			it = BfMap->find( *(struct addr*)(pieee->i_addr3));
 			if(it != BfMap->end()){
 				LOG(INFO) << "already";
 				it->second->dataCnt++;

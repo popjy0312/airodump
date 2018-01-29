@@ -3,12 +3,12 @@
 
 int main(int argc, char** argv){
 	char*							   dev;
-	pcap_t*							 handle;
-	char								errbuf[PCAP_ERRBUF_SIZE];
-	char*				packet;
-	struct pcap_pkthdr*				 pheader;
-	uint32_t							res;
-	std::map<uint32_t, struct bfNode*>   BfMap;
+	pcap_t*                            handle;
+	char							   errbuf[PCAP_ERRBUF_SIZE];
+	char*                              packet;
+	struct pcap_pkthdr*                pheader;
+	uint32_t                           res;
+	mymap                              BfMap;
 
 	google::InitGoogleLogging(argv[0]);
 
