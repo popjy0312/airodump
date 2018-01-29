@@ -101,20 +101,20 @@ int parse(std::map<uint32_t, struct bfNode*>* BfMap, char* packet, uint32_t capl
 						for(i=0;i<CipherSuiteCnt;i++){
 							switch(*(ptmp + offset + i*4)){
 								case 0x01:
-			                        ptmpNode->security |= ENC_WEP;
-			                        break;
-			                    case 0x02:
-			                        ptmpNode->security |= ENC_TKIP;
-			                        break;
-			                    case 0x03:
-			                        ptmpNode->security |= ENC_WRAP;
-			                        break;
-			                    case 0x04:
-			                        ptmpNode->security |= ENC_CCMP;
-			                        break;
-			                    case 0x05:
-			                        ptmpNode->security |= ENC_WEP104;
-			                        break;
+									ptmpNode->security |= ENC_WEP;
+									break;
+								case 0x02:
+									ptmpNode->security |= ENC_TKIP;
+									break;
+								case 0x03:
+									ptmpNode->security |= ENC_WRAP;
+									break;
+								case 0x04:
+									ptmpNode->security |= ENC_CCMP;
+									break;
+								case 0x05:
+									ptmpNode->security |= ENC_WEP104;
+									break;
 								default:
 									break;
 							}
@@ -124,11 +124,11 @@ int parse(std::map<uint32_t, struct bfNode*>* BfMap, char* packet, uint32_t capl
 						for(i=0;i<CipherSuiteCnt;i++){
 							switch(*(ptmp + offset + i*4)){
 								case 0x01:
-			                        ptmpNode->security |= AUTH_MGT;
-			                        break;
-			                    case 0x02:
-			                        ptmpNode->security |= AUTH_PSK;
-			                        break;
+									ptmpNode->security |= AUTH_MGT;
+									break;
+								case 0x02:
+									ptmpNode->security |= AUTH_PSK;
+									break;
 								default:
 									break;
 							}
@@ -184,72 +184,72 @@ void print_data(std::map<uint32_t, struct bfNode*>* BfMap){
 	}
 
 	if(DEBUG){
-		printf(" BSSID              PWR  Beacons    #Data, #/s  CH  MB   ENC  CIPHER AUTH ESSID\n\n");
+		printf(" BSSID			  PWR  Beacons	#Data, #/s  CH  MB   ENC  CIPHER AUTH ESSID\n\n");
 	} else{
-		printw(" BSSID              PWR  Beacons    #Data, #/s  CH  MB   ENC  CIPHER AUTH ESSID\n\n");
+		printw(" BSSID			  PWR  Beacons	#Data, #/s  CH  MB   ENC  CIPHER AUTH ESSID\n\n");
 	}
 	for(std::map<uint32_t, struct bfNode*>::iterator it= BfMap->begin(); it != BfMap->end(); it++){
 		//LOG(INFO) << BfMap->size();
 		ptmpNode = it->second;
 		memset(strbuf, '\0', MAX_STRBUF_LEN);
-	    snprintf( strbuf, sizeof(strbuf), " %02X:%02X:%02X:%02X:%02X:%02X",
-	    	ptmpNode->BSSID[0], ptmpNode->BSSID[1],
-	    	ptmpNode->BSSID[2], ptmpNode->BSSID[3],
-	    	ptmpNode->BSSID[4], ptmpNode->BSSID[5] );
-	    len = strlen(strbuf);
+		snprintf( strbuf, sizeof(strbuf), " %02X:%02X:%02X:%02X:%02X:%02X",
+			ptmpNode->BSSID[0], ptmpNode->BSSID[1],
+			ptmpNode->BSSID[2], ptmpNode->BSSID[3],
+			ptmpNode->BSSID[4], ptmpNode->BSSID[5] );
+		len = strlen(strbuf);
 
-	    snprintf( strbuf + len, sizeof(strbuf) - len, "  %3d %8d %8d %4d %3d %3d%c%c ", 
-	    	ptmpNode->pwr,
-	    	ptmpNode->beconCnt,
-	    	ptmpNode->dataCnt,
-	    	0,
-	    	ptmpNode->ch,
-	    	ptmpNode->max_speed,
-	    	ptmpNode->security?'e' : ' ',
-	    	ptmpNode->preamble?'.' : ' ');
+		snprintf( strbuf + len, sizeof(strbuf) - len, "  %3d %8d %8d %4d %3d %3d%c%c ", 
+			ptmpNode->pwr,
+			ptmpNode->beconCnt,
+			ptmpNode->dataCnt,
+			0,
+			ptmpNode->ch,
+			ptmpNode->max_speed,
+			ptmpNode->security?'e' : ' ',
+			ptmpNode->preamble?'.' : ' ');
 
-	    len = strlen(strbuf);
+		len = strlen(strbuf);
 
-	    if( (ptmpNode->security & (STD_OPN|STD_WEP|STD_WPA|STD_WPA2)) == 0) snprintf( strbuf+len, sizeof(strbuf)-len, "    " );
-	    else if( ptmpNode->security & STD_WPA2 ) snprintf( strbuf+len, sizeof(strbuf)-len, "WPA2" );
-	    else if( ptmpNode->security & STD_WPA  ) snprintf( strbuf+len, sizeof(strbuf)-len, "WPA " );
-	    else if( ptmpNode->security & STD_WEP  ) snprintf( strbuf+len, sizeof(strbuf)-len, "WEP " );
-	    else if( ptmpNode->security & STD_OPN  ) snprintf( strbuf+len, sizeof(strbuf)-len, "OPN " );
+		if( (ptmpNode->security & (STD_OPN|STD_WEP|STD_WPA|STD_WPA2)) == 0) snprintf( strbuf+len, sizeof(strbuf)-len, "	" );
+		else if( ptmpNode->security & STD_WPA2 ) snprintf( strbuf+len, sizeof(strbuf)-len, "WPA2" );
+		else if( ptmpNode->security & STD_WPA  ) snprintf( strbuf+len, sizeof(strbuf)-len, "WPA " );
+		else if( ptmpNode->security & STD_WEP  ) snprintf( strbuf+len, sizeof(strbuf)-len, "WEP " );
+		else if( ptmpNode->security & STD_OPN  ) snprintf( strbuf+len, sizeof(strbuf)-len, "OPN " );
 
-	    len = strlen(strbuf);
+		len = strlen(strbuf);
 
-	   	if( (ptmpNode->security & (ENC_WEP|ENC_TKIP|ENC_WRAP|ENC_CCMP|ENC_WEP104|ENC_WEP40)) == 0 ) snprintf( strbuf+len, sizeof(strbuf)-len, "        ");
-	    else if( ptmpNode->security & ENC_CCMP   ) snprintf( strbuf+len, sizeof(strbuf)-len, " CCMP   ");
-	    else if( ptmpNode->security & ENC_WRAP   ) snprintf( strbuf+len, sizeof(strbuf)-len, " WRAP   ");
-	    else if( ptmpNode->security & ENC_TKIP   ) snprintf( strbuf+len, sizeof(strbuf)-len, " TKIP   ");
-	    else if( ptmpNode->security & ENC_WEP104 ) snprintf( strbuf+len, sizeof(strbuf)-len, " WEP104 ");
-	    else if( ptmpNode->security & ENC_WEP40  ) snprintf( strbuf+len, sizeof(strbuf)-len, " WEP40  ");
-	    else if( ptmpNode->security & ENC_WEP    ) snprintf( strbuf+len, sizeof(strbuf)-len, " WEP    ");
+		if( (ptmpNode->security & (ENC_WEP|ENC_TKIP|ENC_WRAP|ENC_CCMP|ENC_WEP104|ENC_WEP40)) == 0 ) snprintf( strbuf+len, sizeof(strbuf)-len, "		");
+		else if( ptmpNode->security & ENC_CCMP   ) snprintf( strbuf+len, sizeof(strbuf)-len, " CCMP   ");
+		else if( ptmpNode->security & ENC_WRAP   ) snprintf( strbuf+len, sizeof(strbuf)-len, " WRAP   ");
+		else if( ptmpNode->security & ENC_TKIP   ) snprintf( strbuf+len, sizeof(strbuf)-len, " TKIP   ");
+		else if( ptmpNode->security & ENC_WEP104 ) snprintf( strbuf+len, sizeof(strbuf)-len, " WEP104 ");
+		else if( ptmpNode->security & ENC_WEP40  ) snprintf( strbuf+len, sizeof(strbuf)-len, " WEP40  ");
+		else if( ptmpNode->security & ENC_WEP	) snprintf( strbuf+len, sizeof(strbuf)-len, " WEP	");
 
-	    len = strlen(strbuf);
+		len = strlen(strbuf);
 
-	    if( (ptmpNode->security & (AUTH_OPN|AUTH_PSK|AUTH_MGT)) == 0 ) snprintf( strbuf+len, sizeof(strbuf)-len, "    ");
-	    else if( ptmpNode->security & AUTH_MGT   ) snprintf( strbuf+len, sizeof(strbuf)-len, " MGT");
-	    else if( ptmpNode->security & AUTH_PSK   )
-	    {
+		if( (ptmpNode->security & (AUTH_OPN|AUTH_PSK|AUTH_MGT)) == 0 ) snprintf( strbuf+len, sizeof(strbuf)-len, "	");
+		else if( ptmpNode->security & AUTH_MGT   ) snprintf( strbuf+len, sizeof(strbuf)-len, " MGT");
+		else if( ptmpNode->security & AUTH_PSK   )
+		{
 		if( ptmpNode->security & STD_WEP )
-		    snprintf( strbuf+len, sizeof(strbuf)-len, "SKA ");
+			snprintf( strbuf+len, sizeof(strbuf)-len, "SKA ");
 		else
-		    snprintf( strbuf+len, sizeof(strbuf)-len, "PSK ");
-	    }
-	    else if( ptmpNode->security & AUTH_OPN   ) snprintf( strbuf+len, sizeof(strbuf)-len, " OPN");
+			snprintf( strbuf+len, sizeof(strbuf)-len, "PSK ");
+		}
+		else if( ptmpNode->security & AUTH_OPN   ) snprintf( strbuf+len, sizeof(strbuf)-len, " OPN");
 
-	    len = strlen(strbuf);
+		len = strlen(strbuf);
 
-	    snprintf( strbuf + len, sizeof(strbuf) - len, " %s",
-	    	ptmpNode->ESSID);
+		snprintf( strbuf + len, sizeof(strbuf) - len, " %s",
+			ptmpNode->ESSID);
 
-	    if(DEBUG)
-	    	printf("%s\n", strbuf);
-	    else
-	    	printw("%s\n", strbuf);
-	    //LOG(INFO) << ptmpNode->beconCnt;
-	    refresh();
+		if(DEBUG)
+			printf("%s\n", strbuf);
+		else
+			printw("%s\n", strbuf);
+		//LOG(INFO) << ptmpNode->beconCnt;
+		refresh();
 	}
 }
 
