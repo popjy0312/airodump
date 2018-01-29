@@ -1,7 +1,7 @@
 all: airodump
 
 airodump: main.o pcap.o parse802.o savedata.o
-	g++ -W -Wall -o airodump main.o pcap.o parse802.o savedata.o -lpcap -lglog -std=c++11
+	g++ -W -Wall -o airodump main.o pcap.o parse802.o savedata.o -lpcap -lglog -lcurses -std=c++11
 
 savedata.o: savedata.cpp savedata.h
 	g++ -c -o savedata.o savedata.cpp -std=c++11

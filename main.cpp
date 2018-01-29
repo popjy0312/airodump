@@ -8,9 +8,10 @@ int main(int argc, char** argv){
     const unsigned char*                packet;
     struct pcap_pkthdr*                 pheader;
     uint32_t                            res;
-    std::map<uint32_t, struct ApData>   ApMap;
+    std::map<uint32_t, struct bfNode*>   BfMap;
 
     google::InitGoogleLogging(argv[0]);
+    //initscr();
 
     FLAGS_alsologtostderr = 1;
 
@@ -36,9 +37,10 @@ int main(int argc, char** argv){
         if (res == 0)
             continue;
         LOG(INFO) << "len " << pheader->len;
-        parse(&ApMap, packet);
+        parse(&BfMap, packet);
     }
 
     google::ShutdownGoogleLogging();
+    //endwin();
     return 0;
 }
