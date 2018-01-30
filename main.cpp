@@ -12,11 +12,11 @@ int main(int argc, char** argv){
 
 	google::InitGoogleLogging(argv[0]);
 
-	if(DEBUG){
-		FLAGS_alsologtostderr = 1;
-	} else{
-		initscr();
-	}
+	#if defined(DEBUG)
+    	FLAGS_alsologtostderr = 1;
+	#else
+    	initscr();
+    #endif
 
 
 	if(argc != 2){
@@ -44,9 +44,8 @@ int main(int argc, char** argv){
 	}
 
 	google::ShutdownGoogleLogging();
-	if(DEBUG){
-	} else{
-		endwin();
-	}
+	#if defined(DEBUG)
+    	endwin();
+    #endif
 	return 0;
 }

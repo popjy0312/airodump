@@ -177,17 +177,18 @@ void print_data(mymap* BfMap){
 	uint32_t 			len = 0;
 	struct bfNode* 		ptmpNode;
 
-	//clearScr();
-	if(DEBUG){
-	} else{
+	#if defined(DEBUG)
+		clearScr();
+	#else
 		clear();
-	}
+    #endif
 
-	if(DEBUG){
+	#if defined(DEBUG)
 		printf(" BSSID              PWR  Beacons    #Data, #/s  CH  MB   ENC  CIPHER AUTH ESSID\n\n");
-	} else{
+	#else
 		printw(" BSSID              PWR  Beacons    #Data, #/s  CH  MB   ENC  CIPHER AUTH ESSID\n\n");
-	}
+    #endif
+
 	for(mymap::iterator it= BfMap->begin(); it != BfMap->end(); it++){
 		//LOG(INFO) << BfMap->size();
 		ptmpNode = it->second;
@@ -244,10 +245,11 @@ void print_data(mymap* BfMap){
 		snprintf( strbuf + len, sizeof(strbuf) - len, " %s",
 			ptmpNode->ESSID);
 
-		if(DEBUG)
+		#if defined(DEBUG)
 			printf("%s\n", strbuf);
-		else
+		#else
 			printw("%s\n", strbuf);
+    	#endif
 		//LOG(INFO) << ptmpNode->beconCnt;
 		refresh();
 	}

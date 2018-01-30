@@ -7,7 +7,7 @@
 #include <map>
 #include <cstring>
 
-#define DEBUG					0
+//#define DEBUG
 
 #define TYPE_MANAGE_FRAME 		0x0
 #define TYPE_DATA_FRAME 		0x2
